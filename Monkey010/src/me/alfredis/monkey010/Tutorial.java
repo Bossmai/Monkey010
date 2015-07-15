@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import android.graphics.Color;
+import android.net.wifi.WifiInfo;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.widget.TextView;
@@ -37,16 +38,29 @@ public class Tutorial implements IXposedHookLoadPackage {
                 for (String str : lineArray) {
 
                 	String[] tempKVP = str.split(":"); 
+                	
                 	String tempKey = tempKVP[0].substring(1, tempKVP[0].length() - 1);
                 	String tempValue = "";
+                	
+                	int count = 0;
+                	for (int i = 0; i < str.length(); i++) {
+                		if (str.charAt(i) == ':') {
+                			count++;
+                		}                		
+                	}
+                	
                 	if (tempKVP[1].startsWith("\"")) {
-                		tempValue = tempKVP[1].substring(1, tempKVP[1].length() - 1);
+                		if (count > 1) { 
+                    		tempValue = str.substring(str.indexOf(':') + 2, str.length() - 1);
+                		} else {
+                    		tempValue = tempKVP[1].substring(1, tempKVP[1].length() - 1);
+                		}
                 	} else {
                 		tempValue = tempKVP[1];
                 	}
 
 
-                    XposedBridge.log(tempKVP[0] + " " + tempKey);
+                    XposedBridge.log(tempKey + " " + tempValue);
                     configMap.put(tempKey, tempValue);
                 }
 			}
@@ -69,6 +83,15 @@ public class Tutorial implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
         		super.afterHookedMethod(param);
         		param.setResult(configMap.get("getDeviceId"));
+            }
+        });
+		
+		findAndHookMethod(WifiInfo.class.getName(), lpparam.classLoader, "getBSSID", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getBSSID"));
+        		XposedBridge.log("BSSID" + configMap.get("getBSSID"));
             }
         });
 		
