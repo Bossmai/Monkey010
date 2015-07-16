@@ -91,11 +91,26 @@ public class Tutorial implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
         		super.afterHookedMethod(param);
         		param.setResult(configMap.get("getBSSID"));
-        		XposedBridge.log("BSSID" + configMap.get("getBSSID"));
             }
         });
 		
-		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimOperatorName", new XC_MethodHook() {
+		findAndHookMethod(WifiInfo.class.getName(), lpparam.classLoader, "getMacAddress", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getMacAddress"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getNetworkCountryIso", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getNetworkCountryIso"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getNetworkOperator", new XC_MethodHook() {
         	@Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
         		super.afterHookedMethod(param);
@@ -103,11 +118,19 @@ public class Tutorial implements IXposedHookLoadPackage {
             }
         });
 		
-		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimSerialNumber", new XC_MethodHook() {
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getNetworkOperatorName", new XC_MethodHook() {
         	@Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
         		super.afterHookedMethod(param);
-        		param.setResult(configMap.get("getSimSerialNumber"));
+        		param.setResult(configMap.get("getNetworkOperatorName"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getLine1Number", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getLine1Number"));
             }
         });
 		
