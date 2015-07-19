@@ -141,6 +141,54 @@ public class Tutorial implements IXposedHookLoadPackage {
         		param.setResult(configMap.get("getSubscriberId"));
             }
         });
+		
+		findAndHookMethod(WifiInfo.class.getName(), lpparam.classLoader, "getSSID", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSSID"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimCountryIso", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSimCountryIso"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimOperator", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSimOperator"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimOperatorName", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSimOperatorName"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSimSerialNumber", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSimSerialNumber"));
+            }
+        });
+		
+		findAndHookMethod(TelephonyManager.class.getName(), lpparam.classLoader, "getSubscriberId", new XC_MethodHook() {
+        	@Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+        		super.afterHookedMethod(param);
+        		param.setResult(configMap.get("getSubscriberId"));
+            }
+        });
         
 	}
 }
