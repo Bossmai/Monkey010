@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="E:\Repositotries\Monkey010AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
+        <dex dex="E:\Repositotries\Monkey010AS\app\build\intermediates\pre-dexed\debug\classes-db0941d0e8aeec504ac9aeeb8e2a24205fdc763e.jar" />
+    </item>
+    <item
+        jar="E:\Repositotries\Monkey010AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\jars\libs\internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d">
+        <dex dex="E:\Repositotries\Monkey010AS\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-2fad5d314dcd4e4711f6040501a75f2f0de3fb9a.jar" />
+    </item>
+    <item
+        jar="C:\Users\alfre\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa">
+        <dex dex="E:\Repositotries\Monkey010AS\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-843fabeb0208dc55dfeb9ab785ae9ef279009071.jar" />
+    </item>
+    <item
+        jar="E:\Repositotries\Monkey010AS\app\lib\XposedBridgeApi-54.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5f16da4d2ecb2c95be2556550e4a63461f43a99b">
+        <dex dex="E:\Repositotries\Monkey010AS\app\build\intermediates\pre-dexed\debug\XposedBridgeApi-54-d26e55be7a083941298e1ab322ea3a067c1c9771.jar" />
+    </item>
+
+</items>
