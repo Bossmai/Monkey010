@@ -17,6 +17,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 
 import android.app.ActivityManager;
@@ -25,6 +26,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Environment;
@@ -495,6 +498,21 @@ public class Tutorial implements IXposedHookLoadPackage {
                         || filePath.equals("/dev/socket/baseband_genyd") || filePath.equals("/dev/socket/genyd")) {
                     param.setResult(false);
                 }
+            }
+        });
+
+
+        findAndHookMethod(LocationManager.class.getName(), lpparam.classLoader, "getLastKnownLocation", String.class.getName(), new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                Location location = new Location("");
+                if (((String) param.args[0]).equals("gps")) {
+                    Random r = new Random();
+                    location.setLatitude(-90 + 180 * r.nextDouble());
+                    location.setLongitude(-180 + 360 * r.nextDouble());
+                }
+                param.setResult(location);
             }
         });
 
