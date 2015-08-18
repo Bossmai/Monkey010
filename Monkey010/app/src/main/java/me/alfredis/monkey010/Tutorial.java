@@ -475,6 +475,8 @@ public class Tutorial implements IXposedHookLoadPackage {
                 super.afterHookedMethod(param);
                 if (((String) param.args[0]).endsWith("gsm.version.baseband") && ((String) param.args[1]).endsWith("no message")) {
                     param.setResult(configMap.get("get"));
+                } else if (((String) param.args[0]).startsWith("ro.genymotion") || ((String) param.args[0]).startsWith("ro.genyd")) {
+                    param.setResult(null);
                 }
             }
         });
