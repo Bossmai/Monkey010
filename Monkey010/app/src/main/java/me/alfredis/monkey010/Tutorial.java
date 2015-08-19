@@ -497,7 +497,7 @@ public class Tutorial implements IXposedHookLoadPackage {
                 String filePath = file.getAbsolutePath();
                 if (filePath.equals("/dev/socket/qemud") || filePath.equals("/dev/qemu_pipe") || filePath.equals("/system/lib/libc_malloc_debug_qemu.so")
                         || filePath.equals("/sys/qemu_trace") || filePath.equals("/system/bin/qemu-props") || filePath.equals("/system/bin/qemu-props")
-                        || filePath.equals("/dev/socket/baseband_genyd") || filePath.equals("/dev/socket/genyd")) {
+                        || filePath.equals("/dev/socket/baseband_genyd") || filePath.equals("/dev/socket/genyd") || filePath.equals("/proc/cmdline")) {
                     param.setResult(false);
                 }
             }
@@ -511,8 +511,8 @@ public class Tutorial implements IXposedHookLoadPackage {
                 Location location = new Location("");
                 if (((String) param.args[0]).equals("gps")) {
                     Random r = new Random();
-                    location.setLatitude(-90 + 180 * r.nextDouble());
-                    location.setLongitude(-180 + 360 * r.nextDouble());
+                    location.setLatitude(- 90 + 180 * r.nextDouble());
+                    location.setLongitude(- 180 + 360 * r.nextDouble());
                 }
                 param.setResult(location);
             }

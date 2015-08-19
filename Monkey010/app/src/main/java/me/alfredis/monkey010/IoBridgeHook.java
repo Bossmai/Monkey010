@@ -65,6 +65,8 @@ public class IoBridgeHook extends MethodHook {
                         param.args[0] = "/data/data/me.alfredis.monkey010/address";
                     } else if(path.equals("/dev/socket/genyd")) {
                         param.args[0] = "/data/data/me.alfredis.monkey010/null";
+                    } else if(path.equals("/proc/cmdline")) {
+                        param.args[0] = "/data/data/me.alfredis.monkey010/null";
                     }
                 }
         }
