@@ -477,6 +477,11 @@ public class Tutorial implements IXposedHookLoadPackage {
                     param.setResult(configMap.get("get"));
                 } else if (((String) param.args[0]).startsWith("ro.genymotion") || ((String) param.args[0]).startsWith("ro.genyd")) {
                     param.setResult(null);
+                } else if (((String) param.args[0]).startsWith("androVM")) {
+                    param.setResult(null);
+                } else if (((String) param.args[0]).equals("ro.hardware") || ((String) param.args[0]).equals("ro.boot.hardware")) {
+                    param.setResult(configMap.get("HARDWARE"));
+
                 }
             }
         });
