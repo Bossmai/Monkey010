@@ -59,7 +59,7 @@ public class Tutorial implements IXposedHookLoadPackage {
 
     public static int cellIndex = 0;
 
-    private static final String configJson = "{\"connect_mode\":\"0\",\"density\":\"2.0\",\"densityDpi\":\"320\",\"get\":\"I9250XXLJ1\",\"getBSSID\":\"15:f8:96:bc:92:70\",\"getDeviceId\":\"990002043896289\",\"getJiZhan\":\"9/11031/3189\",\"getLine1Number\":\"15435925392\",\"getMacAddress\":\"84:7a:88:ac:4a:da\",\"getMetrics\":\"720x1184\",\"getNetworkCountryIso\":\"cn\",\"getNetworkOperator\":\"46002\",\"getNetworkOperatorName\":\"中国移动\",\"getNetworkType\":\"1\",\"getPhoneType\":\"02\",\"getRadioVersion\":\"I9250XXLJ1\",\"getSSID\":\"home\",\"getSimCountryIso\":\"cn\",\"getSimOperator\":\"46002\",\"getSimOperatorName\":\"中国移动\",\"getSimSerialNumber\":\"89867785196673925881\",\"getSimState\":\"0\",\"getString\":\"c6fdfa76d49732ce\",\"getSubscriberId\":\"460029291155269\",\"gps\":null,\"location_mode\":\"0\",\"scaledDensity\":\"2.0\",\"setCpuName\":\"Tuna\",\"sign\":\"718E95ABAA307C583CFC5A9EAA5FB73E\",\"xdpi\":\"315.31033\",\"ydpi\":\"318.7451\",\"ARCH\":\"armeabi-v7a_armeabi\",\"BRAND\":\"oneplus\",\"DEVICE\":\"HTC ONE M8\",\"FINGERPRINT\":\"oneplus/bacon/A0001:5.0.2/LRX22G/YNG1TAS0YL:user/release-keys\",\"HARDWARE\":\"Qualcomm MSM8974PRO-AC\",\"MANUFACTURER\":\"OnePlus\",\"MODEL\":\"A0001\",\"PRODUCT\":\"A0001\",\"RELEASE\":\"4.3\",\"SDK\":\"18\",\"latitude\":\"0\",\"longitude\":\"0\"}";
+    private static final String configJson = "{\"connect_mode\":\"0\",\"density\":\"2.0\",\"densityDpi\":\"320\",\"get\":\"I9250XXLJ1\",\"getBSSID\":\"15:f8:96:bc:92:70\",\"getDeviceId\":\"990002043896289\",\"getJiZhan\":\"9,11031,3189\",\"getLine1Number\":\"15435925392\",\"getMacAddress\":\"84:7a:88:ac:4a:da\",\"getMetrics\":\"720x1184\",\"getNetworkCountryIso\":\"cn\",\"getNetworkOperator\":\"46002\",\"getNetworkOperatorName\":\"中国移动\",\"getNetworkType\":\"1\",\"getPhoneType\":\"02\",\"getRadioVersion\":\"I9250XXLJ1\",\"getSSID\":\"home\",\"getSimCountryIso\":\"cn\",\"getSimOperator\":\"46002\",\"getSimOperatorName\":\"中国移动\",\"getSimSerialNumber\":\"89867785196673925881\",\"getSimState\":\"0\",\"getString\":\"c6fdfa76d49732ce\",\"getSubscriberId\":\"460029291155269\",\"gps\":\"121,31\",\"location_mode\":\"0\",\"scaledDensity\":\"2.0\",\"setCpuName\":\"Tuna\",\"sign\":\"718E95ABAA307C583CFC5A9EAA5FB73E\",\"xdpi\":\"315.31033\",\"ydpi\":\"318.7451\",\"ARCH\":\"armeabi-v7a_armeabi\",\"BRAND\":\"oneplus\",\"DEVICE\":\"HTC ONE M8\",\"FINGERPRINT\":\"oneplus/bacon/A0001:5.0.2/LRX22G/YNG1TAS0YL:user/release-keys\",\"HARDWARE\":\"Qualcomm MSM8974PRO-AC\",\"MANUFACTURER\":\"OnePlus\",\"MODEL\":\"A0001\",\"PRODUCT\":\"A0001\",\"RELEASE\":\"4.3\",\"SDK\":\"18\",\"latitude\":\"0\",\"longitude\":\"0\"}";
 
     private static final String drivers_content = "/dev/tty             /dev/tty        5       0 system:/dev/tty\n" +
             "/dev/console         /dev/console    5       1 system:console\n" +
@@ -204,7 +204,8 @@ public class Tutorial implements IXposedHookLoadPackage {
                 if (line == null) {
                     break;
                 }
-                
+
+                /*
                 line = line.substring(1, line.length() - 1);
                 String[] lineArray = line.split(",");
                 for (String str : lineArray) {
@@ -233,6 +234,55 @@ public class Tutorial implements IXposedHookLoadPackage {
 
                     //XposedBridge.log(tempKey + " " + tempValue);
                     configMap.put(tempKey, tempValue);
+                }
+                */
+                line = line.substring(1, line.length() - 1);
+
+                line = line.replace("\n", "");
+
+                int i = 0;
+                while (i < line.length()) {
+
+                    String key = "";
+                    String value = "";
+
+                    int keyStartIndex = 0;
+                    int keyEndIndex = 0;
+                    int valueStartIndex = 0;
+                    int valueEndIndex = 0;
+                    if (i < line.length() && line.charAt(i) == '"') {
+                        i++;
+                        keyStartIndex = i;
+                    }
+
+                    while (i < line.length() && line.charAt(i) != '"') {
+                        i++;
+                    }
+
+                    keyEndIndex = i;
+
+                    i++;
+
+                    while (i < line.length() && line.charAt(i) != '"') {
+                        i++;
+                    }
+
+                    i++;
+                    valueStartIndex = i;
+
+                    while (i < line.length() && line.charAt(i) != '"') {
+                        i++;
+                    }
+
+                    valueEndIndex = i;
+                    i++;
+
+                    configMap.put(line.substring(keyStartIndex, keyEndIndex), line.substring(valueStartIndex, valueEndIndex));
+
+                    while (i < line.length() && line.charAt(i) != '"') {
+                        i++;
+                    }
+
                 }
 			}
 			
@@ -389,8 +439,24 @@ public class Tutorial implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                param.setResult(new GsmCellLocation() {
-                });
+                param.setResult(new GsmCellLocation());
+            }
+        });
+
+        findAndHookMethod(GsmCellLocation.class.getName(), lpparam.classLoader, "getLac", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split(",")[1]));
+            }
+        });
+
+        findAndHookMethod(GsmCellLocation.class.getName(), lpparam.classLoader, "getCid", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split(",")[2]));
             }
         });
 
@@ -399,7 +465,7 @@ public class Tutorial implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
 
-                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split("/")[1]));
+                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split(",")[1]));
             }
         });
 
@@ -407,7 +473,7 @@ public class Tutorial implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split("/")[2]));
+                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split(",")[2]));
             }
         });
 
@@ -415,7 +481,7 @@ public class Tutorial implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split("/")[0]));
+                param.setResult(Integer.parseInt(configMap.get("getJiZhan").split(",")[0]));
             }
         });
 
@@ -519,9 +585,7 @@ public class Tutorial implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                if (((String) param.args[0]).endsWith("gsm.version.baseband") && ((String) param.args[1]).endsWith("no message")) {
-                    param.setResult(null);
-                } else if (((String) param.args[0]).startsWith("ro.genymotion") || ((String) param.args[0]).startsWith("ro.genyd")) {
+                if (((String) param.args[0]).startsWith("ro.genymotion") || ((String) param.args[0]).startsWith("ro.genyd")) {
                     param.setResult(null);
                 } else if (((String) param.args[0]).startsWith("androVM")) {
                     param.setResult(null);
@@ -562,8 +626,8 @@ public class Tutorial implements IXposedHookLoadPackage {
                 Location location = new Location("");
                 if (((String) param.args[0]).equals("gps")) {
                     Random r = new Random();
-                    location.setLatitude(Double.parseDouble(configMap.get("latitude")));
-                    location.setLongitude(Double.parseDouble(configMap.get("longitude")));
+                    location.setLatitude(Double.parseDouble(configMap.get("gps").split(",")[1]));
+                    location.setLongitude(Double.parseDouble(configMap.get("gps").split(",")[0]));
                 }
                 param.setResult(location);
             }
